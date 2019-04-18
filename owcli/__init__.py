@@ -7,7 +7,7 @@ from docopt import docopt
 _DOC_TMPL_ = """
 Usage:
   {cli} <command> [<subcommand>] [<args>...]
-  {cli} [<command>] (-h | --help)
+  {cli} <command> [<subcommand>] (-h | --help)
   {cli} [-h | --help]
   {cli} --version
 
@@ -61,7 +61,7 @@ def run(cli: str, version: str, root: str):
     commands = [f'  {x:20}{first_line_in_doc(import_module(root+".commands."+x+".main"))}'
                 for x
                 in os.listdir(f'{root_dir}/commands')
-                if os.path.isdir(f'{root_dir}/commands/{x}')]
+                if os.path.isdir(f'{root_dir}/commands/{x}') and not x.startswith('_')]
 
     doc = _DOC_TMPL_.format(cli=cli, commands='\n'.join(commands))
     main_args = docopt(doc, argv=sys.argv[1:3], version=version, options_first=True)
@@ -84,7 +84,7 @@ def run(cli: str, version: str, root: str):
         subcommands = [f'  {x:20}          {first_line_in_doc(import_module(root+".commands."+command+"."+x+".main"))}'
                        for x
                        in os.listdir(f'{root_dir}/commands/{command}')
-                       if os.path.isdir(f'{root_dir}/commands/{command}/{x}')]
+                       if os.path.isdir(f'{root_dir}/commands/{command}/{x}') and not x.startswith('_')]
 
         if subcommands:
             command_doc = _DOC_COMMAND_TMPL_.format(cli=cli, command=command, subcommands='\n'.join(subcommands))
@@ -101,6 +101,7 @@ def run(cli: str, version: str, root: str):
             )
         )
     except AttributeError:
+        # TODO: Control owlmixin errors
         # Subcommand exists
         try:
             sub_cmd_module = import_module(f'{root}.commands.{command}.{subcommand}.main')
