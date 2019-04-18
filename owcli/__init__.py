@@ -8,6 +8,7 @@ _DOC_TMPL_ = """
 Usage:
   {cli} <command> [<subcommand>] [<args>...]
   {cli} [<command>] (-h | --help)
+  {cli} [-h | --help]
   {cli} --version
 
 Commands:
@@ -66,6 +67,10 @@ def run(cli: str, version: str, root: str):
     main_args = docopt(doc, argv=sys.argv[1:3], version=version, options_first=True)
 
     command: str = main_args.pop('<command>')
+    if command in ["-h", "--help", None]:
+        print(doc)
+        sys.exit(1)
+
     try:
         cmd_module = import_module(f'{root}.commands.{command}.main')
     except ModuleNotFoundError:
@@ -76,7 +81,6 @@ def run(cli: str, version: str, root: str):
     subcommand: str = main_args.pop('<subcommand>')
     # Show global docs and abort
     if subcommand in ["-h", "--help", None]:
-        command_dir = os.path.abspath(f"{os.path.dirname(__file__)}/../{root}/commands/{command}")
         subcommands = [f'  {x:20}          {first_line_in_doc(import_module(root+".commands."+command+"."+x+".main"))}'
                        for x
                        in os.listdir(f'{root_dir}/commands/{command}')
@@ -86,28 +90,32 @@ def run(cli: str, version: str, root: str):
             command_doc = _DOC_COMMAND_TMPL_.format(cli=cli, command=command, subcommands='\n'.join(subcommands))
             print(command_doc)
         else:
-            print(cmd_module.__doc__.format(cli=cli))
+            print(cmd_module.__doc__.format(cli=f"{cli} {command}"))
         sys.exit(0)
 
     try:
         # Run without subcommand if there are no subcommands
         cmd_module.run(
-            cmd_module.Args.from_dict(docopt(cmd_module.__doc__.format(cli=cli)), restrict=False, force_cast=True)
+            cmd_module.Args.from_dict(
+                docopt(cmd_module.__doc__.format(cli=f"{cli} {command}")), restrict=False, force_cast=True
+            )
         )
     except AttributeError:
         # Subcommand exists
         try:
-            sub_cmd_module = import_module(f'gtfsandbox.commands.{command}.{subcommand}.main')
+            sub_cmd_module = import_module(f'{root}.commands.{command}.{subcommand}.main')
             sub_cmd_module.run(
-                sub_cmd_module.Args.from_dict(docopt(sub_cmd_module.__doc__.format(cli=cli)), restrict=False, force_cast=True)
+                sub_cmd_module.Args.from_dict(
+                    docopt(sub_cmd_module.__doc__.format(cli=f"{cli} {command} {subcommand}")), restrict=False, force_cast=True
+                )
             )
         except AttributeError as e:
             print(e)
             print(subcommand_not_found_format(subcommand, command))
-            print(cmd_module.__doc__.format(cli=cli))
+            print(cmd_module.__doc__.format(cli=f"{cli} {command} {subcommand}"))
             sys.exit(1)
         except ModuleNotFoundError as e:
             print(e)
             print(subcommand_not_found_format(subcommand, command))
-            print(cmd_module.__doc__.format(cli=cli))
+            print(cmd_module.__doc__.format(cli=f"{cli} {command} {subcommand}"))
             sys.exit(1)
