@@ -10,12 +10,12 @@ Options:
   -v                                   Verbose (`-v` or `-vv` or `-vvv`)
   -h --help                            Show this screen.
 """
-from owlmixin import OwlMixin
+from owlmixin import OwlMixin, TOption
 
 
 class Args(OwlMixin):
     name: str
-    type: str
+    type: TOption[str]
     v: int
 
 
