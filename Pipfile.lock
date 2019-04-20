@@ -32,10 +32,10 @@
         },
         "owlmixin": {
             "hashes": [
-                "sha256:50be752fab61ad6553b82d7674f90eaf07776b8dc2ca78058e3e1e05ef68ba24"
+                "sha256:2c2fd181b896fbcf487f9bbff0c80221d4b5faa2694e27be8e3aaf0ec534c9cd"
             ],
             "index": "pypi",
-            "version": "==2.10.1"
+            "version": "==3.0.0"
         },
         "pbr": {
             "hashes": [

@@ -1,6 +1,7 @@
 import os
 import sys
 from importlib import import_module
+from typing import List
 
 from docopt import docopt
 
@@ -25,20 +26,24 @@ Subcommands:
 """
 
 
-def command_not_found_format(command: str) -> str:
+def command_not_found_format(command: str, commands: List[str]) -> str:
+    cmds = '\n'.join(commands)
     return f"""
-Command `{command}` is not found.
-Show available commands.
--------------------------------------
-"""
+| Command `{command}` is not found.
+| Show available commands.
+`{'-' * 79}
+
+{cmds}"""
 
 
-def subcommand_not_found_format(subcommand: str, command: str) -> str:
+def subcommand_not_found_format(subcommand: str, command: str, subcommands: List[str]) -> str:
+    cmds = '\n'.join(subcommands)
     return f"""
-Subcommand `{subcommand}` is not found in `{command}` command.
-Show available subcommands.
----------------------------------------
-"""
+| Subcommand `{subcommand}` is not found in `{command}` command.
+| Show available subcommands.
+`{'-' * 79}
+
+{cmds}"""
 
 
 def first_line_in_doc(module) -> str:
@@ -58,7 +63,7 @@ def run(cli: str, version: str, root: str):
     """
     # Remove <args> to avoid parse errors.
     root_dir = os.path.abspath(f"{os.path.dirname(__file__)}/../{root}")
-    commands = [f'  {x:20}{first_line_in_doc(import_module(root+".commands."+x+".main"))}'
+    commands = [f'  {x:20}{first_line_in_doc(import_module(root + ".commands." + x + ".main"))}'
                 for x
                 in os.listdir(f'{root_dir}/commands')
                 if os.path.isdir(f'{root_dir}/commands/{x}') and not x.startswith('_')]
@@ -74,18 +79,18 @@ def run(cli: str, version: str, root: str):
     try:
         cmd_module = import_module(f'{root}.commands.{command}.main')
     except ModuleNotFoundError:
-        print(command_not_found_format(command))
-        print(doc)
+        print(command_not_found_format(command, commands))
         sys.exit(1)
 
     subcommand: str = main_args.pop('<subcommand>')
+    subcommands = [
+        f'  {x:20}          {first_line_in_doc(import_module(root + ".commands." + command + "." + x + ".main"))}'
+        for x
+        in os.listdir(f'{root_dir}/commands/{command}')
+        if os.path.isdir(f'{root_dir}/commands/{command}/{x}') and not x.startswith('_')]
+
     # Show global docs and abort
     if subcommand in ["-h", "--help", None]:
-        subcommands = [f'  {x:20}          {first_line_in_doc(import_module(root+".commands."+command+"."+x+".main"))}'
-                       for x
-                       in os.listdir(f'{root_dir}/commands/{command}')
-                       if os.path.isdir(f'{root_dir}/commands/{command}/{x}') and not x.startswith('_')]
-
         if subcommands:
             command_doc = _DOC_COMMAND_TMPL_.format(cli=cli, command=command, subcommands='\n'.join(subcommands))
             print(command_doc)
@@ -93,30 +98,31 @@ def run(cli: str, version: str, root: str):
             print(cmd_module.__doc__.format(cli=f"{cli} {command}"))
         sys.exit(0)
 
-    try:
-        # Run without subcommand if there are no subcommands
+    # Run without subcommand if there are no subcommands
+    if hasattr(cmd_module, "run"):
+        print("cmdにrunがあると実行して終わり")
         cmd_module.run(
             cmd_module.Args.from_dict(
                 docopt(cmd_module.__doc__.format(cli=f"{cli} {command}")), restrict=False, force_cast=True
             )
         )
-    except AttributeError:
-        # TODO: Control owlmixin errors
-        # Subcommand exists
-        try:
-            sub_cmd_module = import_module(f'{root}.commands.{command}.{subcommand}.main')
-            sub_cmd_module.run(
-                sub_cmd_module.Args.from_dict(
-                    docopt(sub_cmd_module.__doc__.format(cli=f"{cli} {command} {subcommand}")), restrict=False, force_cast=True
-                )
+        sys.exit(0)
+
+    # Subcommand exists
+    try:
+        sub_cmd_module = import_module(f'{root}.commands.{command}.{subcommand}.main')
+    except ModuleNotFoundError:
+        print(subcommand_not_found_format(subcommand, command, subcommands))
+        sys.exit(1)
+
+    if hasattr(sub_cmd_module, "run"):
+        sub_cmd_module.run(
+            sub_cmd_module.Args.from_dict(
+                docopt(sub_cmd_module.__doc__.format(cli=f"{cli} {command} {subcommand}")), restrict=False,
+                force_cast=True
             )
-        except AttributeError as e:
-            print(e)
-            print(subcommand_not_found_format(subcommand, command))
-            print(cmd_module.__doc__.format(cli=f"{cli} {command} {subcommand}"))
-            sys.exit(1)
-        except ModuleNotFoundError as e:
-            print(e)
-            print(subcommand_not_found_format(subcommand, command))
-            print(cmd_module.__doc__.format(cli=f"{cli} {command} {subcommand}"))
-            sys.exit(1)
+        )
+        sys.exit(0)
+
+    print(f"Subcommand `{subcommand}` doesn't has `run` function.")
+    sys.exit(1)
