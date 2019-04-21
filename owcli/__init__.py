@@ -51,20 +51,20 @@ def first_line_in_doc(module) -> str:
 def run(cli: str, version: str, root: str):
     """
     :param cli: CLI file name
-    :param version: version
-    :param root: root package path
+    :param version: Version
+    :param root: Absolute path for root
 
     Example:
         ----
-        docowl.run(cli="gtfs", version=VERSION, root='gtfsandbox')
+        docowl.run(cli="gtfs", version=__version__, root=os.path.dirname(os.path.realpath(__file__)))
         ----
     """
+    root_dirname = os.path.basename(root)
     # Remove <args> to avoid parse errors.
-    root_dir = os.path.abspath(f"{os.path.dirname(__file__)}/../{root}")
-    commands = [f'  {x:20}{first_line_in_doc(import_module(root + ".commands." + x + ".main"))}'
+    commands = [f'  {x:20}{first_line_in_doc(import_module(root_dirname + ".commands." + x + ".main"))}'
                 for x
-                in os.listdir(f'{root_dir}/commands')
-                if os.path.isdir(f'{root_dir}/commands/{x}') and not x.startswith('_')]
+                in os.listdir(f'{root}/commands')
+                if os.path.isdir(f'{root}/commands/{x}') and not x.startswith('_')]
 
     doc = _DOC_TMPL_.format(cli=cli, commands='\n'.join(commands))
     main_args = docopt(doc, argv=sys.argv[1:3], version=version, options_first=True)
@@ -75,17 +75,17 @@ def run(cli: str, version: str, root: str):
         sys.exit(1)
 
     try:
-        cmd_module = import_module(f'{root}.commands.{command}.main')
+        cmd_module = import_module(f'{root_dirname}.commands.{command}.main')
     except ModuleNotFoundError:
         print(command_not_found_format(command, commands))
         sys.exit(1)
 
     subcommand: str = main_args.pop('<subcommand>')
     subcommands = [
-        f'  {x:20}          {first_line_in_doc(import_module(root + ".commands." + command + "." + x + ".main"))}'
+        f'  {x:20}          {first_line_in_doc(import_module(root_dirname + ".commands." + command + "." + x + ".main"))}'
         for x
-        in os.listdir(f'{root_dir}/commands/{command}')
-        if os.path.isdir(f'{root_dir}/commands/{command}/{x}') and not x.startswith('_')]
+        in os.listdir(f'{root}/commands/{command}')
+        if os.path.isdir(f'{root}/commands/{command}/{x}') and not x.startswith('_')]
 
     # Show global docs and abort
     if subcommand in ["-h", "--help", None]:
@@ -107,7 +107,7 @@ def run(cli: str, version: str, root: str):
 
     # Subcommand exists
     try:
-        sub_cmd_module = import_module(f'{root}.commands.{command}.{subcommand}.main')
+        sub_cmd_module = import_module(f'{root_dirname}.commands.{command}.{subcommand}.main')
     except ModuleNotFoundError:
         print(subcommand_not_found_format(subcommand, command, subcommands))
         sys.exit(1)

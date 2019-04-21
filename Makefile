@@ -41,7 +41,7 @@ release: ## Release (set TWINE_USERNAME and TWINE_PASSWORD to enviroment varialb
 	@make test-cli
 
 	@echo '1. Update versions'
-	@sed -i -r 's/VERSION = ".+"/VERSION = "$(branch_version)"/g' owcli/main.py
+	@sed -i -r 's/__version__ = ".+"/__version__ = "$(branch_version)"/g' owcli/main.py
 
 	@echo '2. Staging and commit'
 	git add owcli/main.py
