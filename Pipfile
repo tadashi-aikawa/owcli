@@ -8,6 +8,11 @@ docopt = "*"
 owlmixin = "*"
 
 [dev-packages]
+twine = "*"
+wheel = "*"
+pipenv = "*"
+# sphinx, twine vulnerables
+urllib3 = ">=1.24.2"
 
 [requires]
 python_version = "3.7"
