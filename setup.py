@@ -25,7 +25,7 @@ setup(
     version=re.search(
         r'VERSION\s*=\s*[\'"]([^\'"]*)[\'"]',  # It excludes inline comment too
         open('owcli/main.py').read()).group(1),
-    description='Check difference between two responses of API.',
+    description='CLI framework which supports both command and subcommand.',
     long_description=load_readme(),
     long_description_content_type='text/markdown',
     license='MIT',
