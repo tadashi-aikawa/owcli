@@ -12,7 +12,7 @@ help: ## Print this help
 	@echo 'Targets:'
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z0-9][a-zA-Z0-9_-]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
-version := $(shell git rev-parse --abbrev-ref HEAD)
+branch_version := $(shell git rev-parse --abbrev-ref HEAD)
 
 #------
 
@@ -45,20 +45,17 @@ release: ## Release (set TWINE_USERNAME and TWINE_PASSWORD to enviroment varialb
 
 	@echo '2. Staging and commit'
 	git add owcli/main.py
-	git commit -m ':package: Version $(version)'
+	git commit -m ':package: Version $(branch_version)'
 
 	@echo '3. Tags'
-	git tag v$(version) -m v$(version)
-
-	@echo '4. Push'
-	git push --tags
+	git tag v$(branch_version) -m v$(branch_version)
 
 	@echo '5. Deploy'
 	@echo 'Packaging...'
 	@pipenv run python setup.py bdist_wheel
 	@echo 'Deploying...'
-	@pipenv run twine upload dist/owcli-$(version)-py3-none-any.whl
+	@pipenv run twine upload dist/owcli-$(branch_version)-py3-none-any.whl
 
 	@echo 'Success All!!'
 	@echo 'Create a pull request and merge to master!!'
-	@echo 'https://github.com/tadashi-aikawa/owcli/compare/$(version)?expand=1'
+	@echo 'https://github.com/tadashi-aikawa/owcli/compare/$(branch_version)?expand=1'
