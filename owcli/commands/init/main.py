@@ -22,6 +22,20 @@ def exists_any(dst: str) -> bool:
     return any(map(lambda e: os.path.exists(f'{dst}/{e}'), TEMPLATE_ENTRIES))
 
 
+def walk_create(tmpl_current: str, dst_current: str, depth: int, root: str):
+    for e in os.listdir(tmpl_current):
+        if os.path.isdir(f'{tmpl_current}/{e}'):
+            if e == "__pycache__":
+                continue
+            path_from_dst = root if e == "yourapp" else e
+            print(f" {'  '*depth}∟📂 {path_from_dst}")
+            os.mkdir(f'{dst_current}/{path_from_dst}')
+            walk_create(f'{tmpl_current}/{e}', f'{dst_current}/{path_from_dst}', depth+1, root)
+        else:
+            print(f" {'  '*depth}∟📄 {e}")
+            shutil.copy(f'{tmpl_current}/{e}', f'{dst_current}/{e}')
+
+
 class Args(OwlMixin):
     root: str
 
@@ -40,14 +54,7 @@ def run(args: Args):
     if not os.path.exists(dst):
         os.mkdir(dst)
     print(f"📂 {dst}")
-    for e in TEMPLATE_ENTRIES:
-        if os.path.isdir(f'{TEMPLATE_DIR}/{e}'):
-            real_entry = args.root if e == "yourapp" else e
-            print(f" ∟📂 {real_entry}")
-            shutil.copytree(f'{TEMPLATE_DIR}/yourapp', f'{dst}/{real_entry}')
-        else:
-            print(f" ∟📄 {e}")
-            shutil.copy(f'{TEMPLATE_DIR}/{e}', f'{dst}/{e}')
+    walk_create(TEMPLATE_DIR, dst, 0, args.root)
 
     main_file = f"{dst}/{args.root}/main.py"
     with open(main_file, "r") as f:
