@@ -40,8 +40,8 @@ release: ## Release (set TWINE_USERNAME and TWINE_PASSWORD to enviroment varialb
 	@pipenv install --deploy
 	@make test-cli
 
-    @echo '1. Update versions'
-    @sed -i -r 's/VERSION = ".+"/VERSION = "$(branch_version)"/g' owcli/main.py
+	@echo '1. Update versions'
+	@sed -i -r 's/VERSION = ".+"/VERSION = "$(branch_version)"/g' owcli/main.py
 
 	@echo '2. Staging and commit'
 	git add owcli/main.py
