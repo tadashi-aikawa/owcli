@@ -29,7 +29,7 @@ for root, dirs, files in os.walk(f'{here}/owcli/template'):
 setup(
     name='owcli',
     version=re.search(
-        r'VERSION\s*=\s*[\'"]([^\'"]*)[\'"]',  # It excludes inline comment too
+        r'__version__\s*=\s*[\'"]([^\'"]*)[\'"]',  # It excludes inline comment too
         open('owcli/main.py').read()).group(1),
     description='CLI framework which supports both command and subcommand.',
     long_description=load_readme(),
