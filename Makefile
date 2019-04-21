@@ -50,6 +50,9 @@ release: ## Release (set TWINE_USERNAME and TWINE_PASSWORD to enviroment varialb
 	@echo '3. Tags'
 	git tag v$(branch_version) -m v$(branch_version)
 
+	@echo '4. Push'
+	git push --tags
+
 	@echo '5. Deploy'
 	@echo 'Packaging...'
 	@pipenv run python setup.py bdist_wheel
