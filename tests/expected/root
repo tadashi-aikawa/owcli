@@ -1,0 +1,5 @@
+Usage:
+  testapp <command> [<subcommand>] [<args>...]
+  testapp <command> [<subcommand>] (-h | --help)
+  testapp (-h | --help)
+  testapp --version

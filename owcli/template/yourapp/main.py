@@ -13,7 +13,7 @@ VERSION = '0.1.0'
 
 
 def main():
-    owcli.run(cli="app", version=VERSION, root='template')
+    owcli.run(cli="yourapp", version=VERSION, root='yourapp')
 
 
 if __name__ == '__main__':

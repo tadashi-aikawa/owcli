@@ -35,16 +35,25 @@ def run(args: Args):
         sys.exit(1)
 
     print(f"------------------------")
-    print(f"| Success to create !! |")
+    print(f"| Create entries...    |")
     print(f"------------------------")
+    if not os.path.exists(dst):
+        os.mkdir(dst)
     print(f"📂 {dst}")
     for e in TEMPLATE_ENTRIES:
         if os.path.isdir(f'{TEMPLATE_DIR}/{e}'):
-            print(f" ∟📂 {e}")
-            shutil.copytree(f'{TEMPLATE_DIR}/{e}', f'{dst}/{e}')
+            real_entry = args.root if e == "yourapp" else e
+            print(f" ∟📂 {real_entry}")
+            shutil.copytree(f'{TEMPLATE_DIR}/yourapp', f'{dst}/{real_entry}')
         else:
             print(f" ∟📄 {e}")
             shutil.copy(f'{TEMPLATE_DIR}/{e}', f'{dst}/{e}')
+
+    main_file = f"{dst}/{args.root}/main.py"
+    with open(main_file, "r") as f:
+        dt = f.read()
+    with open(main_file, "w") as f:
+        f.write(dt.replace("yourapp", args.root))
 
     print("")
     print(f"------------------------")
@@ -53,5 +62,5 @@ def run(args: Args):
     print(f"$ cd {args.root}")
     print(f"# Change python_version in Pipfile if you don't want to use specified version.")
     print(f"$ pipenv install")
-    print(f"$ pipenv run python main.py --help")
+    print(f"$ pipenv run python {args.root}/main.py --help")
 

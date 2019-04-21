@@ -1,0 +1,9 @@
+Usage:
+  testapp <command> [<subcommand>] [<args>...]
+  testapp <command> [<subcommand>] (-h | --help)
+  testapp (-h | --help)
+  testapp --version
+
+Commands:
+  cmd1                Command1
+  cmd2                Command2
