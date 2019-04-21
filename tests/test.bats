@@ -77,14 +77,34 @@ prepare() {
 #--------------------------
 @test "Root" {
   prepare
-
   run $TEST_CMD
-  assert_out root "$output"
+  assert_out none "$output"
 }
 
 @test "Root help" {
   prepare
-
   run $TEST_CMD -h
-  assert_out root_help "$output"
+  assert_out help "$output"
+}
+
+#--------------------------
+# Cmd1 (Command only)
+#--------------------------
+@test "cmd1" {
+  prepare
+  run $TEST_CMD cmd1
+  assert_out cmd1/none "$output"
+}
+
+@test "cmd1 help" {
+  prepare
+  run $TEST_CMD cmd1 -h
+  assert_out cmd1/help "$output"
+}
+
+@test "cmd1 full command" {
+  prepare
+  run $TEST_CMD cmd1 tokyo -t station -vv
+
+  assert_out cmd1/full "$output"
 }
