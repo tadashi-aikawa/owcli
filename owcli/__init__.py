@@ -5,8 +5,7 @@ from typing import List
 
 from docopt import docopt
 
-_DOC_TMPL_ = """
-Usage:
+_DOC_TMPL_ = """Usage:
   {cli} <command> [<subcommand>] [<args>...]
   {cli} <command> [<subcommand>] (-h | --help)
   {cli} (-h | --help)
@@ -16,8 +15,7 @@ Commands:
 {commands}
 """
 
-_DOC_COMMAND_TMPL_ = """
-Usage:
+_DOC_COMMAND_TMPL_ = """Usage:
   {cli} {command} [<subcommand>] [<args>...]
   {cli} {command} (-h | --help)
 

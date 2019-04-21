@@ -88,7 +88,7 @@ prepare() {
 }
 
 #--------------------------
-# Cmd1 (Command only)
+# cmd1 (Command only)
 #--------------------------
 @test "cmd1" {
   prepare
@@ -107,4 +107,61 @@ prepare() {
   run $TEST_CMD cmd1 tokyo -t station -vv
 
   assert_out cmd1/full "$output"
+}
+
+#--------------------------
+# cmd2
+#--------------------------
+@test "cmd2" {
+  prepare
+  run $TEST_CMD cmd2
+  assert_out cmd2/none "$output"
+}
+
+@test "cmd2 help" {
+  prepare
+  run $TEST_CMD cmd2 --help
+  assert_out cmd2/help "$output"
+}
+
+#--------------------------
+# cmd2 -> subcmd1
+#--------------------------
+@test "cmd2 -> subcmd1" {
+  prepare
+  run $TEST_CMD cmd2 subcmd1
+  assert_out cmd2/subcmd1/none "$output"
+}
+
+@test "cmd2 -> subcmd1 help" {
+  prepare
+  run $TEST_CMD cmd2 subcmd1 --help
+  assert_out cmd2/subcmd1/help "$output"
+}
+
+@test "cmd2 -> subcmd1 full" {
+  prepare
+  run $TEST_CMD cmd2 subcmd1 name1 name2 -f
+  assert_out cmd2/subcmd1/full "$output"
+}
+
+#--------------------------
+# cmd2 -> subcmd2
+#--------------------------
+@test "cmd2 -> subcmd2" {
+  prepare
+  run $TEST_CMD cmd2 subcmd2
+  assert_out cmd2/subcmd2/none "$output"
+}
+
+@test "cmd2 -> subcmd2 help" {
+  prepare
+  run $TEST_CMD cmd2 subcmd2 --help
+  assert_out cmd2/subcmd2/help "$output"
+}
+
+@test "cmd2 -> subcmd2 full" {
+  prepare
+  run $TEST_CMD cmd2 subcmd2 action2 --target target1 target2 -v
+  assert_out cmd2/subcmd2/full "$output"
 }

@@ -1,0 +1,3 @@
+Usage:
+  testapp cmd2 subcmd1 <names>... [-f|--flag]
+  testapp cmd2 subcmd1 (-h | --help)

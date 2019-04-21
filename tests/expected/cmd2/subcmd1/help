@@ -1,0 +1,10 @@
+Subcommand1
+
+Usage:
+  testapp cmd2 subcmd1 <names>... [-f|--flag]
+  testapp cmd2 subcmd1 (-h | --help)
+
+Options:
+  <names>...                           Names
+  -f --flag                            Flag
+  -h --help                            Show this screen.
