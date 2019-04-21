@@ -9,7 +9,7 @@ _DOC_TMPL_ = """
 Usage:
   {cli} <command> [<subcommand>] [<args>...]
   {cli} <command> [<subcommand>] (-h | --help)
-  {cli} [-h | --help]
+  {cli} (-h | --help)
   {cli} --version
 
 Commands:
@@ -100,7 +100,6 @@ def run(cli: str, version: str, root: str):
 
     # Run without subcommand if there are no subcommands
     if hasattr(cmd_module, "run"):
-        print("cmdにrunがあると実行して終わり")
         cmd_module.run(
             cmd_module.Args.from_dict(
                 docopt(cmd_module.__doc__.format(cli=f"{cli} {command}")), restrict=False, force_cast=True
