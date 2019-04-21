@@ -9,11 +9,11 @@ sys.path.append(os.getcwd())
 
 import owcli
 
-VERSION = "0.1.1"
+__version__ = "0.1.2"
 
 
 def main():
-    owcli.run(cli="owcli", version=VERSION, root='owcli')
+    owcli.run(cli="owcli", version=__version__, root=os.path.dirname(os.path.realpath(__file__)))
 
 
 if __name__ == '__main__':
