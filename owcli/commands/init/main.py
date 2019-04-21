@@ -28,11 +28,11 @@ def walk_create(tmpl_current: str, dst_current: str, depth: int, root: str):
             if e == "__pycache__":
                 continue
             path_from_dst = root if e == "yourapp" else e
-            print(f" {'  '*depth}∟📂{path_from_dst}")
+            print(f" {'  '*depth}∟📂 {path_from_dst}")
             os.mkdir(f'{dst_current}/{path_from_dst}')
             walk_create(f'{tmpl_current}/{e}', f'{dst_current}/{path_from_dst}', depth+1, root)
         else:
-            print(f" {'  '*depth}∟📄{e}")
+            print(f" {'  '*depth}∟📄 {e}")
             shutil.copy(f'{tmpl_current}/{e}', f'{dst_current}/{e}')
 
 

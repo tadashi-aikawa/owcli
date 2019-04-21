@@ -39,9 +39,25 @@ $ owcli init testapp
 ------------------------
 | Create entries...    |
 ------------------------
-📂 /home/tadashi-aikawa/tmp/lihoge/testapp
+📂 C:\Users\syoum\git\github.com\tadashi-aikawa\owcli\yuya
  ∟📄 Pipfile
- ∟📂 testapp
+ ∟📂 yuya
+   ∟📂 commands
+     ∟📂 cmd1
+       ∟📄 main.py
+       ∟📄 __init__.py
+     ∟📂 cmd2
+       ∟📄 main.py
+       ∟📂 subcmd1
+         ∟📄 main.py
+         ∟📄 __init__.py
+       ∟📂 subcmd2
+         ∟📄 main.py
+         ∟📄 __init__.py
+       ∟📄 __init__.py
+     ∟📄 __init__.py
+   ∟📄 main.py
+   ∟📄 __init__.py
 
 ------------------------
 | Next you have to ... |
