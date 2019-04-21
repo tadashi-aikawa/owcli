@@ -20,6 +20,12 @@ def load_readme():
         return f.read()
 
 
+target_files = []
+for root, dirs, files in os.walk(f'{here}/owcli/template'):
+    targets = [os.path.join(root, f) for f in files]
+    target_files.extend(targets)
+
+
 setup(
     name='owcli',
     version=re.search(
@@ -36,6 +42,7 @@ setup(
     url='https://github.com/tadashi-aikawa/owcli.git',
     keywords='cli framework',
     packages=find_packages(exclude=['tests*']),
+    package_data={'owcli': target_files},
     install_requires=requirements,
     extras_require={'test': test_requirements},
     entry_points={
