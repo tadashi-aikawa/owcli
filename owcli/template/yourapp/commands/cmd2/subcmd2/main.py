@@ -1,11 +1,11 @@
 """Subcommand2
 
 Usage:
-  {cli} (action1|action2|action3) --target <targets>... [-v|--verbose]
+  {cli} (action1|action2|action3) --target <target>... [-v|--verbose]
   {cli} (-h | --help)
 
 Options:
-  <target>...                          Targets
+  --target <targets>...                Targets
   -v --verbose                         Verbose
   -h --help                            Show this screen.
 """
@@ -16,7 +16,7 @@ class Args(OwlMixin):
     action1: bool
     action2: bool
     action3: bool
-    targets: TList[str]
+    target: TList[str]
     verbose: bool
 
 

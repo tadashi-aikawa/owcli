@@ -5,10 +5,10 @@ Usage:
   {cli} (-h | --help)
 
 Options:
-  <name>                               Name
-  -t <type>, --type <type>             Type
-  -v                                   Verbose (`-v` or `-vv` or `-vvv`)
-  -h --help                            Show this screen.
+  <name>                        Name
+  -t, --type <type>             Type
+  -v                            Verbose (`-v` or `-vv` or `-vvv`)
+  -h --help                     Show this screen.
 """
 from owlmixin import OwlMixin, TOption
 
