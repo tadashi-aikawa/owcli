@@ -1,7 +1,7 @@
 action1: false
 action2: true
 action3: false
-targets:
+target:
   - target1
   - target2
 verbose: true

@@ -5,7 +5,7 @@ Usage:
   testapp cmd1 (-h | --help)
 
 Options:
-  <name>                               Name
-  -t <type>, --type <type>             Type
-  -v                                   Verbose (`-v` or `-vv` or `-vvv`)
-  -h --help                            Show this screen.
+  <name>                        Name
+  -t, --type <type>             Type
+  -v                            Verbose (`-v` or `-vv` or `-vvv`)
+  -h --help                     Show this screen.

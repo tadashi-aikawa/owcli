@@ -13,7 +13,7 @@ __version__ = '0.1.0'
 
 
 def main():
-    owcli.run(cli="yourapp", version=__version__, root=os.path.dirname(os.path.realpath(__file__)))
+    owcli.run(cli="__yourapp", version=__version__, root=os.path.dirname(os.path.realpath(__file__)))
 
 
 if __name__ == '__main__':
