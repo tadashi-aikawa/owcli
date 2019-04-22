@@ -39,9 +39,11 @@ $ owcli init testapp
 ------------------------
 | Create entries...    |
 ------------------------
-📂 C:\Users\syoum\git\github.com\tadashi-aikawa\owcli\yuya
+📂 /mnt/c/Users/syoum/git/github.com/tadashi-aikawa/owcli/testapp
  ∟📄 Pipfile
- ∟📂 yuya
+ ∟📄 README.md
+ ∟📄 setup.py
+ ∟📂 testapp
    ∟📂 commands
      ∟📂 cmd1
        ∟📄 main.py
