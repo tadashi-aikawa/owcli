@@ -5,9 +5,9 @@ Usage:
   {cli} (-h | --help)
 
 Options:
-  --target <targets>...                Targets
-  -v --verbose                         Verbose
-  -h --help                            Show this screen.
+  --target <target>...              Targets
+  -v --verbose                      Verbose
+  -h --help                         Show this screen.
 """
 from owlmixin import OwlMixin, TList
 

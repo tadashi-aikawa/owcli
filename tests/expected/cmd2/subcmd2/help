@@ -1,10 +1,10 @@
 Subcommand2
 
 Usage:
-  testapp cmd2 subcmd2 (action1|action2|action3) --target <targets>... [-v|--verbose]
+  testapp cmd2 subcmd2 (action1|action2|action3) --target <target>... [-v|--verbose]
   testapp cmd2 subcmd2 (-h | --help)
 
 Options:
-  <target>...                          Targets
-  -v --verbose                         Verbose
-  -h --help                            Show this screen.
+  --target <target>...              Targets
+  -v --verbose                      Verbose
+  -h --help                         Show this screen.

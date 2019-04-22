@@ -162,6 +162,6 @@ prepare() {
 
 @test "cmd2 -> subcmd2 full" {
   prepare
-  run $TEST_CMD cmd2 subcmd2 action2 --target target1 target2 -v
+  run $TEST_CMD cmd2 subcmd2 action2 --target target1 --target target2 -v
   assert_out cmd2/subcmd2/full "$output"
 }
