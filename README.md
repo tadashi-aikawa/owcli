@@ -5,7 +5,9 @@ owcli
 [![pypi](https://img.shields.io/pypi/v/owcli.svg)]()
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
 
-CLI framework which supports both command and subcommand.
+CLI framework which supports both command and subcommand based on [docopt].
+
+[docopt]: http://docopt.org/
 
 
 Install
