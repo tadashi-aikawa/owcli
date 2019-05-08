@@ -61,10 +61,10 @@ def run(cli: str, version: str, root: str):
     """
     root_dirname = os.path.basename(root)
     # Remove <args> to avoid parse errors.
-    commands = [f'  {x:20}{first_line_in_doc(import_module(root_dirname + ".commands." + x + ".main"))}'
-                for x
-                in os.listdir(f'{root}/commands')
-                if os.path.isdir(f'{root}/commands/{x}') and not x.startswith('_')]
+    commands = [
+        f'  {x:20}{first_line_in_doc(import_module(root_dirname + ".commands." + x + ".main"))}'
+        for x in os.listdir(f'{root}/commands') if os.path.isdir(f'{root}/commands/{x}') and not x.startswith('_')
+    ]
 
     doc = _DOC_TMPL_.format(cli=cli, commands='\n'.join(commands))
     main_args = docopt(doc, argv=sys.argv[1:3], version=version, options_first=True)
@@ -83,9 +83,9 @@ def run(cli: str, version: str, root: str):
     subcommand: str = main_args.pop('<subcommand>')
     subcommands = [
         f'  {x:20}          {first_line_in_doc(import_module(root_dirname + ".commands." + command + "." + x + ".main"))}'
-        for x
-        in os.listdir(f'{root}/commands/{command}')
-        if os.path.isdir(f'{root}/commands/{command}/{x}') and not x.startswith('_')]
+        for x in os.listdir(f'{root}/commands/{command}')
+        if os.path.isdir(f'{root}/commands/{command}/{x}') and not x.startswith('_')
+    ]
 
     # Show global docs and abort
     if subcommand in ["-h", "--help", None]:
@@ -115,7 +115,8 @@ def run(cli: str, version: str, root: str):
     if hasattr(sub_cmd_module, "run"):
         sub_cmd_module.run(
             sub_cmd_module.Args.from_dict(
-                docopt(sub_cmd_module.__doc__.format(cli=f"{cli} {command} {subcommand}")), restrict=False,
+                docopt(sub_cmd_module.__doc__.format(cli=f"{cli} {command} {subcommand}")),
+                restrict=False,
                 force_cast=True
             )
         )
