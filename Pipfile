@@ -13,6 +13,8 @@ wheel = "*"
 pipenv = "*"
 # sphinx, twine vulnerables
 urllib3 = ">=1.24.2"
+pylint = "*"
+yapf = "*"
 
 [requires]
 python_version = "3.7"
