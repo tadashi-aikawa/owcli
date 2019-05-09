@@ -3,9 +3,3 @@ Command1
 Usage:
   testapp cmd1 <name> [-t <type>|--type <type>] [-v|-vv|-vvv]
   testapp cmd1 (-h | --help)
-
-Options:
-  <name>                        Name
-  -t, --type <type>             Type
-  -v                            Verbose (`-v` or `-vv` or `-vvv`)
-  -h --help                     Show this screen.
