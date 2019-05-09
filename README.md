@@ -81,7 +81,7 @@ Commands:
   cmd1                Command1
   cmd2                Command2
 
-$ testapp/main.py cmd2
+$ testapp/main.py cmd2 -h
 Usage:
   testapp cmd2 [<subcommand>] [<args>...]
   testapp cmd2 (-h | --help)
@@ -109,8 +109,6 @@ names:
   - hoga
   - hogu
 ```
-
-
 
 
 For developer
