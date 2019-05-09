@@ -63,7 +63,8 @@ def run(cli: str, version: str, root: str):
     # Remove <args> to avoid parse errors.
     commands = [
         f'  {x:20}{first_line_in_doc(import_module(root_dirname + ".commands." + x + ".main"))}'
-        for x in os.listdir(f'{root}/commands') if os.path.isdir(f'{root}/commands/{x}') and not x.startswith('_')
+        for x in sorted(os.listdir(f'{root}/commands'))
+        if os.path.isdir(f'{root}/commands/{x}') and not x.startswith('_')
     ]
 
     doc = _DOC_TMPL_.format(cli=cli, commands='\n'.join(commands))
@@ -83,7 +84,7 @@ def run(cli: str, version: str, root: str):
     subcommand: str = main_args.pop('<subcommand>')
     subcommands = [
         f'  {x:20}          {first_line_in_doc(import_module(root_dirname + ".commands." + command + "." + x + ".main"))}'
-        for x in os.listdir(f'{root}/commands/{command}')
+        for x in sorted(os.listdir(f'{root}/commands/{command}'))
         if os.path.isdir(f'{root}/commands/{command}/{x}') and not x.startswith('_')
     ]
 
