@@ -15,7 +15,8 @@ Commands:
 {commands}
 """
 
-_DOC_COMMAND_TMPL_ = """Usage:
+_DOC_COMMAND_TMPL_ = """{description}
+Usage:
   {cli} {command} [<subcommand>] [<args>...]
   {cli} {command} (-h | --help)
 
@@ -91,7 +92,9 @@ def run(cli: str, version: str, root: str):
     # Show global docs and abort
     if subcommand in ["-h", "--help", None]:
         if subcommands:
-            command_doc = _DOC_COMMAND_TMPL_.format(cli=cli, command=command, subcommands='\n'.join(subcommands))
+            command_doc = _DOC_COMMAND_TMPL_.format(
+                cli=cli, command=command, subcommands='\n'.join(subcommands), description=cmd_module.__doc__
+            )
             print(command_doc)
         else:
             print(cmd_module.__doc__.format(cli=f"{cli} {command}"))

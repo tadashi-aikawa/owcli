@@ -1,3 +1,5 @@
+Command2
+
 Usage:
   testapp cmd2 [<subcommand>] [<args>...]
   testapp cmd2 (-h | --help)
