@@ -5,23 +5,40 @@ from typing import List
 
 from docopt import docopt
 
-_DOC_TMPL_ = """Usage:
+
+def head_while_options(doc: str) -> str:
+    ret = ""
+    for line in doc.split("\n"):
+        if line.startswith("Options:"):
+            return ret
+        ret += line + "\n"
+
+
+def create_doc(cli: str, commands: str, show_help: bool) -> str:
+    commands_doc = f"""Commands:
+{commands}""" if show_help else ""
+
+    return f"""
+Usage:
   {cli} <command> [<subcommand>] [<args>...]
   {cli} <command> [<subcommand>] (-h | --help)
   {cli} (-h | --help)
   {cli} --version
 
-Commands:
-{commands}
-"""
+{commands_doc}"""
 
-_DOC_COMMAND_TMPL_ = """Usage:
+
+def create_doc_command(cli: str, command: str, description: str, subcommands: str, show_help: bool) -> str:
+    subcommands_doc = f"""
+Subcommands:
+{subcommands}""" if show_help else ""
+
+    description_doc = f"{description}\n" if description else ""
+
+    return f"""{description_doc}Usage:
   {cli} {command} [<subcommand>] [<args>...]
   {cli} {command} (-h | --help)
-
-Subcommands:
-{subcommands}
-"""
+{subcommands_doc}"""
 
 
 def command_not_found_format(command: str, commands: List[str]) -> str:
@@ -61,17 +78,21 @@ def run(cli: str, version: str, root: str):
     """
     root_dirname = os.path.basename(root)
     # Remove <args> to avoid parse errors.
-    commands = [f'  {x:20}{first_line_in_doc(import_module(root_dirname + ".commands." + x + ".main"))}'
-                for x
-                in os.listdir(f'{root}/commands')
-                if os.path.isdir(f'{root}/commands/{x}') and not x.startswith('_')]
+    commands = [
+        f'  {x:20}{first_line_in_doc(import_module(root_dirname + ".commands." + x + ".main"))}'
+        for x in sorted(os.listdir(f'{root}/commands'))
+        if os.path.isdir(f'{root}/commands/{x}') and not x.startswith('_')
+    ]
 
-    doc = _DOC_TMPL_.format(cli=cli, commands='\n'.join(commands))
+    doc = create_doc(cli=cli, commands='\n'.join(commands), show_help=True)
     main_args = docopt(doc, argv=sys.argv[1:3], version=version, options_first=True)
 
     command: str = main_args.pop('<command>')
-    if command in ["-h", "--help", None]:
-        print(doc)
+    if command in ["-h", "--help"]:
+        print(create_doc(cli=cli, commands='\n'.join(commands), show_help=True))
+        sys.exit(0)
+    if command is None:
+        print(create_doc(cli=cli, commands='\n'.join(commands), show_help=False))
         sys.exit(1)
 
     try:
@@ -83,18 +104,24 @@ def run(cli: str, version: str, root: str):
     subcommand: str = main_args.pop('<subcommand>')
     subcommands = [
         f'  {x:20}          {first_line_in_doc(import_module(root_dirname + ".commands." + command + "." + x + ".main"))}'
-        for x
-        in os.listdir(f'{root}/commands/{command}')
-        if os.path.isdir(f'{root}/commands/{command}/{x}') and not x.startswith('_')]
+        for x in sorted(os.listdir(f'{root}/commands/{command}'))
+        if os.path.isdir(f'{root}/commands/{command}/{x}') and not x.startswith('_')
+    ]
 
     # Show global docs and abort
-    if subcommand in ["-h", "--help", None]:
-        if subcommands:
-            command_doc = _DOC_COMMAND_TMPL_.format(cli=cli, command=command, subcommands='\n'.join(subcommands))
-            print(command_doc)
-        else:
-            print(cmd_module.__doc__.format(cli=f"{cli} {command}"))
+    if subcommand in ["-h", "--help"]:
+        command_doc = create_doc_command(cli, command, cmd_module.__doc__, "\n".join(subcommands), True)\
+            if subcommands\
+            else cmd_module.__doc__.format(cli=f"{cli} {command}")
+        print(command_doc)
         sys.exit(0)
+
+    if subcommand is None:
+        command_doc = create_doc_command(cli, command, "", "\n".join(subcommands), False)\
+            if subcommands\
+            else head_while_options(cmd_module.__doc__.format(cli=f"{cli} {command}"))
+        print(command_doc)
+        sys.exit(1)
 
     # Run without subcommand if there are no subcommands
     if hasattr(cmd_module, "run"):
@@ -115,7 +142,8 @@ def run(cli: str, version: str, root: str):
     if hasattr(sub_cmd_module, "run"):
         sub_cmd_module.run(
             sub_cmd_module.Args.from_dict(
-                docopt(sub_cmd_module.__doc__.format(cli=f"{cli} {command} {subcommand}")), restrict=False,
+                docopt(sub_cmd_module.__doc__.format(cli=f"{cli} {command} {subcommand}")),
+                restrict=False,
                 force_cast=True
             )
         )

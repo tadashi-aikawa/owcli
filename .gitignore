@@ -108,3 +108,7 @@ venv.bak/
 
 # pypi
 /.pypirc
+
+# vscode
+settings.json
+/.vscode
