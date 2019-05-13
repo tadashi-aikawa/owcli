@@ -1,5 +1,3 @@
-Command1
-
 Usage:
   testapp cmd1 <name> [-t <type>|--type <type>] [-v|-vv|-vvv]
   testapp cmd1 (-h | --help)

@@ -177,3 +177,37 @@ prepare() {
   [ "$status" -eq 0 ]
   assert_out cmd2/subcmd2/full "$output"
 }
+
+#--------------------------
+# cmd2 -> subcmd3
+#--------------------------
+@test "cmd2 -> subcmd3" {
+  prepare
+  run $TEST_CMD cmd2 subcmd3
+  [ "$status" -eq 0 ]
+  assert_out cmd2/subcmd3/none "$output"
+}
+
+@test "cmd2 -> subcmd3 help" {
+  prepare
+  run $TEST_CMD cmd2 subcmd3 --help
+  [ "$status" -eq 0 ]
+  assert_out cmd2/subcmd3/help "$output"
+}
+
+#--------------------------
+# cmd3
+#--------------------------
+@test "cmd3" {
+  prepare
+  run $TEST_CMD cmd3
+  [ "$status" -eq 0 ]
+  assert_out cmd3/none "$output"
+}
+
+@test "cmd3 help" {
+  prepare
+  run $TEST_CMD cmd3 --help
+  [ "$status" -eq 0 ]
+  assert_out cmd3/help "$output"
+}

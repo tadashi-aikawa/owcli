@@ -1,4 +1,5 @@
 import os
+import re
 import sys
 from importlib import import_module
 from typing import List
@@ -61,8 +62,8 @@ def subcommand_not_found_format(subcommand: str, command: str, subcommands: List
 {cmds}"""
 
 
-def first_line_in_doc(module) -> str:
-    return module.__doc__.split("\n")[0]
+def first_line_in_doc(path: str) -> str:
+    return re.search(r'"""(.*)', open(path).read()).group(1)
 
 
 def run(cli: str, version: str, root: str):
@@ -79,7 +80,7 @@ def run(cli: str, version: str, root: str):
     root_dirname = os.path.basename(root)
     # Remove <args> to avoid parse errors.
     commands = [
-        f'  {x:20}{first_line_in_doc(import_module(root_dirname + ".commands." + x + ".main"))}'
+        f'  {x:20}{first_line_in_doc(os.path.join(root_dirname, "commands", x, "main.py"))}'
         for x in sorted(os.listdir(f'{root}/commands'))
         if os.path.isdir(f'{root}/commands/{x}') and not x.startswith('_')
     ]
@@ -91,9 +92,6 @@ def run(cli: str, version: str, root: str):
     if command in ["-h", "--help"]:
         print(create_doc(cli=cli, commands='\n'.join(commands), show_help=True))
         sys.exit(0)
-    if command is None:
-        print(create_doc(cli=cli, commands='\n'.join(commands), show_help=False))
-        sys.exit(1)
 
     try:
         cmd_module = import_module(f'{root_dirname}.commands.{command}.main')
@@ -103,7 +101,7 @@ def run(cli: str, version: str, root: str):
 
     subcommand: str = main_args.pop('<subcommand>')
     subcommands = [
-        f'  {x:20}          {first_line_in_doc(import_module(root_dirname + ".commands." + command + "." + x + ".main"))}'
+        f'  {x:20}          {first_line_in_doc(os.path.join(root_dirname, "commands", command, x, "main.py"))}'
         for x in sorted(os.listdir(f'{root}/commands/{command}'))
         if os.path.isdir(f'{root}/commands/{command}/{x}') and not x.startswith('_')
     ]
@@ -115,13 +113,6 @@ def run(cli: str, version: str, root: str):
             else cmd_module.__doc__.format(cli=f"{cli} {command}")
         print(command_doc)
         sys.exit(0)
-
-    if subcommand is None:
-        command_doc = create_doc_command(cli, command, "", "\n".join(subcommands), False)\
-            if subcommands\
-            else head_while_options(cmd_module.__doc__.format(cli=f"{cli} {command}"))
-        print(command_doc)
-        sys.exit(1)
 
     # Run without subcommand if there are no subcommands
     if hasattr(cmd_module, "run"):
@@ -136,7 +127,10 @@ def run(cli: str, version: str, root: str):
     try:
         sub_cmd_module = import_module(f'{root_dirname}.commands.{command}.{subcommand}.main')
     except ModuleNotFoundError:
-        print(subcommand_not_found_format(subcommand, command, subcommands))
+        if subcommand:
+            print(subcommand_not_found_format(subcommand, command, subcommands))
+        else:
+            print(create_doc_command(cli, command, None, "\n".join(subcommands), False))
         sys.exit(1)
 
     if hasattr(sub_cmd_module, "run"):

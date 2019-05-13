@@ -1,0 +1,8 @@
+Command3
+
+Usage:
+  testapp cmd3
+  testapp cmd3 (-h | --help)
+
+Options:
+  -h --help                     Show this screen.
