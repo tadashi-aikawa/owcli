@@ -63,7 +63,7 @@ def subcommand_not_found_format(subcommand: str, command: str, subcommands: List
 
 
 def first_line_in_doc(path: str) -> str:
-    return re.search(r'"""(.*)', open(path).read()).group(1)
+    return re.search(r'"""(.*)', open(path, encoding="utf-8").read()).group(1)
 
 
 def run(cli: str, version: str, root: str):
