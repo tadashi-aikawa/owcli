@@ -92,9 +92,6 @@ def run(cli: str, version: str, root: str):
     if command in ["-h", "--help"]:
         print(create_doc(cli=cli, commands='\n'.join(commands), show_help=True))
         sys.exit(0)
-    if command is None:
-        print(create_doc(cli=cli, commands='\n'.join(commands), show_help=False))
-        sys.exit(1)
 
     try:
         cmd_module = import_module(f'{root_dirname}.commands.{command}.main')
@@ -117,13 +114,6 @@ def run(cli: str, version: str, root: str):
         print(command_doc)
         sys.exit(0)
 
-    if subcommand is None:
-        command_doc = create_doc_command(cli, command, "", "\n".join(subcommands), False)\
-            if subcommands\
-            else head_while_options(cmd_module.__doc__.format(cli=f"{cli} {command}"))
-        print(command_doc)
-        sys.exit(1)
-
     # Run without subcommand if there are no subcommands
     if hasattr(cmd_module, "run"):
         cmd_module.run(
@@ -137,7 +127,10 @@ def run(cli: str, version: str, root: str):
     try:
         sub_cmd_module = import_module(f'{root_dirname}.commands.{command}.{subcommand}.main')
     except ModuleNotFoundError:
-        print(subcommand_not_found_format(subcommand, command, subcommands))
+        if subcommand:
+            print(subcommand_not_found_format(subcommand, command, subcommands))
+        else:
+            print(create_doc_command(cli, command, None, "\n".join(subcommands), False))
         sys.exit(1)
 
     if hasattr(sub_cmd_module, "run"):

@@ -1,0 +1,8 @@
+Subcommand3
+
+Usage:
+  testapp cmd2 subcmd3
+  testapp cmd2 subcmd3 (-h | --help)
+
+Options:
+  -h --help                            Show this screen.

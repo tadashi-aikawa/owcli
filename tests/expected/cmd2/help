@@ -7,3 +7,4 @@ Usage:
 Subcommands:
   subcmd1                       Subcommand1
   subcmd2                       Subcommand2
+  subcmd3                       Subcommand3
