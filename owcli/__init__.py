@@ -1,4 +1,5 @@
 import os
+import re
 import sys
 from importlib import import_module
 from typing import List
@@ -61,8 +62,8 @@ def subcommand_not_found_format(subcommand: str, command: str, subcommands: List
 {cmds}"""
 
 
-def first_line_in_doc(module) -> str:
-    return module.__doc__.split("\n")[0]
+def first_line_in_doc(path: str) -> str:
+    return re.search(r'"""(.*)', open(path).read()).group(1)
 
 
 def run(cli: str, version: str, root: str):
@@ -79,7 +80,7 @@ def run(cli: str, version: str, root: str):
     root_dirname = os.path.basename(root)
     # Remove <args> to avoid parse errors.
     commands = [
-        f'  {x:20}{first_line_in_doc(import_module(root_dirname + ".commands." + x + ".main"))}'
+        f'  {x:20}{first_line_in_doc(os.path.join(root_dirname, "commands", x, "main.py"))}'
         for x in sorted(os.listdir(f'{root}/commands'))
         if os.path.isdir(f'{root}/commands/{x}') and not x.startswith('_')
     ]
@@ -103,7 +104,7 @@ def run(cli: str, version: str, root: str):
 
     subcommand: str = main_args.pop('<subcommand>')
     subcommands = [
-        f'  {x:20}          {first_line_in_doc(import_module(root_dirname + ".commands." + command + "." + x + ".main"))}'
+        f'  {x:20}          {first_line_in_doc(os.path.join(root_dirname, "commands", command, x, "main.py"))}'
         for x in sorted(os.listdir(f'{root}/commands/{command}'))
         if os.path.isdir(f'{root}/commands/{command}/{x}') and not x.startswith('_')
     ]
