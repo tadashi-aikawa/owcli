@@ -80,7 +80,7 @@ def run(cli: str, version: str, root: str):
     root_dirname = os.path.basename(root)
     # Remove <args> to avoid parse errors.
     commands = [
-        f'  {x:20}{first_line_in_doc(os.path.join(root_dirname, "commands", x, "main.py"))}'
+        f'  {x:20}{first_line_in_doc(os.path.join(root, "commands", x, "main.py"))}'
         for x in sorted(os.listdir(f'{root}/commands'))
         if os.path.isdir(f'{root}/commands/{x}') and not x.startswith('_')
     ]
@@ -101,7 +101,7 @@ def run(cli: str, version: str, root: str):
 
     subcommand: str = main_args.pop('<subcommand>')
     subcommands = [
-        f'  {x:20}          {first_line_in_doc(os.path.join(root_dirname, "commands", command, x, "main.py"))}'
+        f'  {x:20}          {first_line_in_doc(os.path.join(root, "commands", command, x, "main.py"))}'
         for x in sorted(os.listdir(f'{root}/commands/{command}'))
         if os.path.isdir(f'{root}/commands/{command}/{x}') and not x.startswith('_')
     ]
