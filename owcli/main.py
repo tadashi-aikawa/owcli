@@ -13,8 +13,13 @@ __version__ = "0.4.2"
 
 
 def main():
-    owcli.run(cli="owcli", version=__version__, root=os.path.dirname(os.path.realpath(__file__)))
+    owcli.run(
+        cli="owcli",
+        version=__version__,
+        root=os.path.dirname(os.path.realpath(__file__)),
+    )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
+
