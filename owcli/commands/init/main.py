@@ -21,21 +21,23 @@ TEMPLATE_ENTRIES = os.listdir(TEMPLATE_DIR)
 
 
 def exists_any(dst: str) -> bool:
-    return any(map(lambda e: os.path.exists(f'{dst}/{e}'), TEMPLATE_ENTRIES))
+    return any(map(lambda e: os.path.exists(f"{dst}/{e}"), TEMPLATE_ENTRIES))
 
 
 def copy_recursively(tmpl_current: str, dst_current: str, root: str, depth: int = 0):
     for e in os.listdir(tmpl_current):
-        if os.path.isdir(f'{tmpl_current}/{e}'):
+        if os.path.isdir(f"{tmpl_current}/{e}"):
             if e == "__pycache__":
                 continue
             path_from_dst = root if e == "yourapp" else e
             print(f" {'  ' * depth}∟📂 {path_from_dst}")
-            os.mkdir(f'{dst_current}/{path_from_dst}')
-            copy_recursively(f'{tmpl_current}/{e}', f'{dst_current}/{path_from_dst}', root, depth + 1)
+            os.mkdir(f"{dst_current}/{path_from_dst}")
+            copy_recursively(
+                f"{tmpl_current}/{e}", f"{dst_current}/{path_from_dst}", root, depth + 1
+            )
         else:
             print(f" {'  ' * depth}∟📄 {e}")
-            shutil.copy(f'{tmpl_current}/{e}', f'{dst_current}/{e}')
+            shutil.copy(f"{tmpl_current}/{e}", f"{dst_current}/{e}")
 
 
 def replace_in_file(path: str, before: str, after: str):
@@ -81,3 +83,4 @@ def run(args: Args):
     print(f"# Change python_version in Pipfile if you don't want to use specified version.")
     print(f"$ pipenv install")
     print(f"$ pipenv run python {args.root}/main.py --help")
+
