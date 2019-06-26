@@ -10,10 +10,6 @@ Options:
 from owlmixin import OwlMixin, TList
 
 
-class Args(OwlMixin):
-    # Requires at least one field
-    help: any
-
-
-def run(args: Args):
-    print(args.to_yaml())
+def run():
+    # No args
+    print("No args")

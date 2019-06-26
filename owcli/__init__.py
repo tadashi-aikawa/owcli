@@ -128,13 +128,17 @@ def run(cli: str, version: str, root: str):
 
     # Run without subcommand if there are no subcommands
     if hasattr(cmd_module, "run"):
-        cmd_module.run(
-            cmd_module.Args.from_dict(
-                docopt(cmd_module.__doc__.format(cli=f"{cli} {command}")),
-                restrict=False,
-                force_cast=True,
+        cmd_doc_dict = docopt(cmd_module.__doc__.format(cli=f"{cli} {command}"))
+        if hasattr(cmd_module, "Args"):
+            cmd_module.run(
+                cmd_module.Args.from_dict(
+                    cmd_doc_dict,
+                    restrict=False,
+                    force_cast=True,
+                ) 
             )
-        )
+        else:
+            cmd_module.run()
         sys.exit(0)
 
     # Subcommand exists
@@ -148,13 +152,17 @@ def run(cli: str, version: str, root: str):
         sys.exit(1)
 
     if hasattr(sub_cmd_module, "run"):
-        sub_cmd_module.run(
-            sub_cmd_module.Args.from_dict(
-                docopt(sub_cmd_module.__doc__.format(cli=f"{cli} {command} {subcommand}")),
-                restrict=False,
-                force_cast=True,
+        subcmd_doc_dict = docopt(sub_cmd_module.__doc__.format(cli=f"{cli} {command} {subcommand}"))
+        if hasattr(sub_cmd_module, "Args"):
+            sub_cmd_module.run(
+                sub_cmd_module.Args.from_dict(
+                    subcmd_doc_dict,
+                    restrict=False,
+                    force_cast=True,
+                ) 
             )
-        )
+        else:
+            sub_cmd_module.run()
         sys.exit(0)
 
     print(f"Subcommand `{subcommand}` doesn't has `run` function.")
