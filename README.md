@@ -2,7 +2,7 @@ owcli
 =====
 
 [![versions](https://img.shields.io/pypi/pyversions/owcli.svg)]()
-[![pypi](https://img.shields.io/pypi/v/owcli.svg)]()
+[![pypi](https://img.shields.io/pypi/v/owcli.svg)](https://pypi.org/project/owcli/)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
 
 CLI framework which supports both command and subcommand based on [docopt].
