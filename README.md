@@ -31,7 +31,8 @@ Run
 
 ```
 $ cd <app_name>
-$ <app_name>/main.py --help
+$ pipenv install
+$ pipenv run python <app_name>/main.py --help
 ```
 
 ### Concrete example
@@ -70,7 +71,9 @@ $ owcli init testapp
 .
 
 $ cd testapp
-$ testapp/main.py --help
+$ pipenv install
+$ pipenv shell
+$ python testapp/main.py --help
 Usage:
   testapp <command> [<subcommand>] [<args>...]
   testapp <command> [<subcommand>] (-h | --help)
@@ -81,7 +84,7 @@ Commands:
   cmd1                Command1
   cmd2                Command2
 
-$ testapp/main.py cmd2 -h
+$ python testapp/main.py cmd2 -h
 Usage:
   testapp cmd2 [<subcommand>] [<args>...]
   testapp cmd2 (-h | --help)
@@ -90,7 +93,7 @@ Subcommands:
   subcmd1                       Subcommand1
   subcmd2                       Subcommand2
 
-$ testapp/main.py cmd2 subcmd1 --help
+$ python testapp/main.py cmd2 subcmd1 --help
 Subcommand1
 
 Usage:
@@ -102,7 +105,7 @@ Options:
   -f --flag                            Flag
   -h --help                            Show this screen.
   
-$ testapp/main.py cmd2 subcmd1 hoge hoga hogu -f
+$ python testapp/main.py cmd2 subcmd1 hoge hoga hogu -f
 flag: true
 names:
   - hoge
