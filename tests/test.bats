@@ -1,5 +1,6 @@
 #!/usr/bin/env bats
 
+export PIPENV_VERBOSITY=-1
 APP="testapp"
 
 OWCLI="pipenv run python owcli/main.py"
