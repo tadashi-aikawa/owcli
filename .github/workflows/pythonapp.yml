@@ -1,4 +1,4 @@
-name: "CI"
+name: "e2e tests"
 
 on: [push]
 
@@ -26,8 +26,11 @@ jobs:
     - name: Test with bats
       run: make test-cli
     - name: Slack notification
-      env:
-        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-      uses: Ilshidur/action-slack@master
+      uses: homoluctus/slatify@master
+      if: always()
       with:
-        args: 'A new commit has been pushed.'
+        type: ${{ job.status }}
+        job_name: "*e2e tests*"
+        icon_emoji: "tio2"
+        channel: "#bot_tadashi-aikawa"
+        url: ${{ secrets.SLACK_WEBHOOK }}
