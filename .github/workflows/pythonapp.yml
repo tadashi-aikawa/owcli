@@ -1,8 +1,13 @@
 name: "e2e tests"
 
 on:
-  - push
-  - schedule:
+  push:
+    - '*'
+    - '!/.editorconfig'
+    - '!/.gitignore'
+    - '!/Makefile'
+    - '!/README.md'
+  schedule:
     - '*/15 * * * *'
 
 jobs:
