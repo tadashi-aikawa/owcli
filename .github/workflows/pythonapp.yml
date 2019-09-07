@@ -3,10 +3,12 @@ name: "e2e tests"
 on:
   push:
     paths:
-      - '.github/**'
+      - '.github/**/*'
       - 'owcli/**'
       - 'tests/**'
       - 'Pipfile.lock'
+  schedule:
+    - cron: '*/15 * * * *'
 
 jobs:
   test:
