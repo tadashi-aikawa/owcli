@@ -3,6 +3,7 @@ name: "e2e tests"
 on:
   push:
     paths:
+      - '.github/**'
       - 'owcli/**'
       - 'tests/**'
       - 'Pipfile.lock'
