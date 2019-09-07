@@ -1,6 +1,9 @@
 name: "e2e tests"
 
-on: [push]
+on:
+  - push
+  - schedule:
+    - '*/15 * * * *'
 
 jobs:
   test:
