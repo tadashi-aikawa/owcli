@@ -3,7 +3,6 @@ name: "e2e tests"
 on:
   push:
     paths:
-      - '*'
       - '!/.editorconfig'
       - '!/.gitignore'
       - '!/Makefile'
