@@ -1,7 +1,7 @@
 owcli
 =====
 
-[![travis](https://api.travis-ci.org/tadashi-aikawa/owcli.svg?branch=master)](https://travis-ci.org/tadashi-aikawa/owcli/builds)
+[![Actions Status](https://github.com/tadashi-aikawa/owcli/workflows/e2e%20tests/badge.svg)](https://github.com/tadashi-aikawa/owcli/actions)
 [![versions](https://img.shields.io/pypi/pyversions/owcli.svg)]()
 [![pypi](https://img.shields.io/pypi/v/owcli.svg)](https://pypi.org/project/owcli/)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
