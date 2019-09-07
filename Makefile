@@ -28,7 +28,7 @@ _package: _clean-package ## Package OwlMixin
 
 test-cli: ## Test on CLI
 	@echo Start $@
-	@-bats tests/test.bats
+	@bats tests/test.bats
 	@echo End $@
 
 release: ## Release (set TWINE_USERNAME and TWINE_PASSWORD to enviroment varialbles)
