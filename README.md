@@ -124,6 +124,12 @@ For developer
 * make
 * bats
 
+### Flow
+
+1. Create version branch like as 6.0.0
+2. Create Issue and development! (Feature branch is optional)
+3. Commit with prefix emoji like ":memo:", and suffix issue number like "#120"
+
 ### Commands
 
 #### Create and activate env
