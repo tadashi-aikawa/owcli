@@ -136,9 +136,6 @@ For developer
 #### Integration test
 
 ```
-# Only once
-$ make init
-
 $ make test-cli
 ```
 

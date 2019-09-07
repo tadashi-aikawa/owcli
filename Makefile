@@ -16,9 +16,6 @@ branch_version := $(shell git rev-parse --abbrev-ref HEAD)
 
 #------
 
-init: ## Install dependencies
-	pipenv sync
-
 _clean-package: ## Clean package
 	@echo Start $@
 	@rm -rf build dist jumeaux.egg-info
