@@ -7,8 +7,6 @@ on:
       - 'owcli/**'
       - 'tests/**'
       - 'Pipfile.lock'
-  schedule:
-    - cron: '*/16 * * * *'
 
 jobs:
   test:
