@@ -17,7 +17,7 @@ branch_version := $(shell git rev-parse --abbrev-ref HEAD)
 #------
 
 init: ## Install dependencies
-	pipenv install -d
+	pipenv sync
 
 _clean-package: ## Clean package
 	@echo Start $@

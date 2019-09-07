@@ -132,16 +132,13 @@ For developer
 
 ### Commands
 
-#### Create and activate env
-
-```
-$ make init
-$ pipenv shell
-```
 
 #### Integration test
 
 ```
+# Only once
+$ make init
+
 $ make test-cli
 ```
 
