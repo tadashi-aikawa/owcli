@@ -86,7 +86,7 @@ prepare() {
 @test "Root help" {
   prepare
   run $TEST_CMD -h
-  [ "$status" -eq 0 ]
+  [ "$status" -eq 1 ]
   assert_out help "$output"
 }
 
