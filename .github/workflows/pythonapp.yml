@@ -25,3 +25,9 @@ jobs:
         pipenv sync
     - name: Test with bats
       run: make test-cli
+    - name: Slack notification
+      env:
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+      uses: Ilshidur/action-slack@master
+      with:
+        args: 'A new commit has been pushed.'
