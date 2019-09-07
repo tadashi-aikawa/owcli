@@ -39,6 +39,5 @@ jobs:
       with:
         type: ${{ job.status }}
         job_name: "*e2e tests*"
-        icon_emoji: "tio2"
         channel: "#bot_tadashi-aikawa"
         url: ${{ secrets.SLACK_WEBHOOK }}
