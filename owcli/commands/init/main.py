@@ -1,14 +1,20 @@
 """Command1
 
 Usage:
-  {cli} <root> [-n <your_name>|--name <your_name>] [-m <mail_address>|--mail <mail_address>]
+  {cli} <root> --python <python_version>
+        [-n <your_name>|--name <your_name>]
+        [-m <mail_address>|--mail <mail_address>]
   {cli} (-h | --help)
 
 Options:
   <root>                         Root directory.
+  --python <python_version>      Python version.
   -n, --name <your_name>         Your name.
   -m, --mail <mail_address>      Your mail address.
   -h --help                      Show this screen.
+
+Examples:
+  {cli} init --python 3.7 sample_app
 """
 import os
 import shutil
@@ -49,6 +55,7 @@ def replace_in_file(path: str, before: str, after: str):
 
 class Args(OwlMixin):
     root: str
+    python: str
     name: TOption[str]
     mail: TOption[str]
 
@@ -72,6 +79,8 @@ def run(args: Args):
     replace_in_file(f"{dst}/{args.root}/main.py", "__yourapp", args.root)
     replace_in_file(f"{dst}/README.md", "__yourapp", args.root)
     replace_in_file(f"{dst}/setup.py", "__yourapp", args.root)
+    replace_in_file(f"{dst}/Pipfile", "__python_version", args.python)
+
     args.name.map(lambda name: replace_in_file(f"{dst}/setup.py", "__yourname", name))
     args.mail.map(lambda address: replace_in_file(f"{dst}/setup.py", "__youraddress", address))
 
