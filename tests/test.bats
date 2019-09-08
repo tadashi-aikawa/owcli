@@ -210,3 +210,12 @@ prepare() {
   [ "$status" -eq 0 ]
   assert_out cmd3/help "$output"
 }
+
+# Import error
+@test "cmd3 import error" {
+  prepare
+  echo "import hogehoge" >> ${APP}/commands/cmd3/main.py
+  run $TEST_CMD cmd3
+  [ "$status" -eq 1 ]
+  assert_out cmd3/error "$(echo "$output" | tail -1)"
+}
