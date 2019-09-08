@@ -19,18 +19,18 @@ jobs:
     name: Python ${{ matrix.python }}
 
     steps:
-    - name: Install bats
-      run: sudo npm install -g bats
     - name: Checkout a repository
       uses: actions/checkout@v1
+    - name: Install bats
+      run: sudo npm install -g bats
+    - name: Install pipenv
+      run: python -m pip install --upgrade pip pipenv
     - name: Set up Python
       uses: actions/setup-python@v1
       with:
         python-version: ${{ matrix.python }}
     - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip pipenv
-        pipenv sync
+      run: pipenv sync --python --python ${{ matrix.python }}
     - name: Test with bats
       run: make test-cli
     - name: Slack notification
