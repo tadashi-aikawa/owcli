@@ -68,7 +68,7 @@ prepare() {
 }
 
 @test "Init" {
-  $OWCLI init ${APP}
+  $OWCLI init ${APP} --python x.y
 
   assert_exists ${APP}
 }
