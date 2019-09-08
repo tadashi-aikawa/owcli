@@ -32,7 +32,7 @@ jobs:
     - name: Change python version to ${{ matrix.python }} in Pipfile
       run: 'sed -ri 's/python_version = ".+"/python_version = "${{ matrix.python }}"/g' Pipfile'
     - name: Install dependencies
-      run: pipenv sync --python ${{ matrix.python }}
+      run: pipenv install --dev python
     - name: Test with bats
       run: make test-cli
     - name: Slack notification
