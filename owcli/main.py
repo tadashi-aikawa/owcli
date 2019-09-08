@@ -9,7 +9,7 @@ sys.path.append(os.getcwd())
 
 import owcli
 
-__version__ = "0.6.1"
+__version__ = "7.0.0"
 
 
 def main():
