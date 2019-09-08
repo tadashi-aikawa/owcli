@@ -30,7 +30,7 @@ jobs:
       with:
         python-version: ${{ matrix.python }}
     - name: Install dependencies
-      run: pipenv sync --python --python ${{ matrix.python }}
+      run: pipenv sync --python ${{ matrix.python }}
     - name: Test with bats
       run: make test-cli
     - name: Slack notification
