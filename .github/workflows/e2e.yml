@@ -3,9 +3,9 @@ name: "e2e tests"
 on:
   push:
     paths:
-      - '.github/**/*'
-      - 'owcli/**/*'
-      - 'tests/**/*'
+      - '.github/**'
+      - 'owcli/**'
+      - 'tests/**'
       - 'Pipfile.lock'
   schedule:
     - cron: '0 0 * * *'
