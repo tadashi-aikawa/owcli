@@ -105,9 +105,11 @@ def run(cli: str, version: str, root: str):
 
     try:
         cmd_module = import_module(f"{root_dirname}.commands.{command}.main")
-    except ModuleNotFoundError:
-        print(command_not_found_format(command, commands))
-        sys.exit(1)
+    except ModuleNotFoundError as e:
+        if str(e).startswith(f"No module named '{root_dirname}.commands.{command}"):
+            print(command_not_found_format(command, commands))
+            sys.exit(1)
+        raise e
 
     subcommand: str = main_args.pop("<subcommand>")
     subcommands = [
@@ -144,12 +146,14 @@ def run(cli: str, version: str, root: str):
     # Subcommand exists
     try:
         sub_cmd_module = import_module(f"{root_dirname}.commands.{command}.{subcommand}.main")
-    except ModuleNotFoundError:
-        if subcommand:
-            print(subcommand_not_found_format(subcommand, command, subcommands))
-        else:
-            print(create_doc_command(cli, command, None, "\n".join(subcommands), False))
-        sys.exit(1)
+    except ModuleNotFoundError as e:
+        if str(e).startswith(f"No module named '{root_dirname}.commands.{command}.{subcommand}"):
+            if subcommand:
+                print(subcommand_not_found_format(subcommand, command, subcommands))
+            else:
+                print(create_doc_command(cli, command, None, "\n".join(subcommands), False))
+            sys.exit(1)
+        raise e
 
     if hasattr(sub_cmd_module, "run"):
         subcmd_doc_dict = docopt(sub_cmd_module.__doc__.format(cli=f"{cli} {command} {subcommand}"))

@@ -4,7 +4,9 @@ on:
   push:
     paths:
       - '.github/**/*'
+      - 'owcli/*'
       - 'owcli/**/*'
+      - 'tests/*'
       - 'tests/**/*'
       - 'Pipfile.lock'
   schedule:
@@ -27,17 +29,18 @@ jobs:
       uses: actions/setup-python@v1
       with:
         python-version: ${{ matrix.python }}
-    - name: Install pipenv
-      run: python -m pip install --upgrade pip pipenv
     - name: Install dependencies
-      run: pipenv sync --python ${{ matrix.python }}
+      run:  |
+        python -m pip install --upgrade pip pipfile-requirements
+        pipfile2req > requirements.txt
+        pip install -r requirements.txt
     - name: Test with bats
-      run: make test-cli
+      run: bats tests/test.bats
     - name: Slack notification
       uses: homoluctus/slatify@master
       if: always()
       with:
         type: ${{ job.status }}
-        job_name: "*e2e tests*"
+        job_name: ":python:*${{ matrix.python }}* e2e tests"
         icon_emoji: "tio2"
         url: ${{ secrets.SLACK_WEBHOOK }}

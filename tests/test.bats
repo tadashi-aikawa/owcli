@@ -1,10 +1,8 @@
 #!/usr/bin/env bats
-
-export PIPENV_VERBOSITY=-1
 APP="testapp"
 
-OWCLI="pipenv run python owcli/main.py"
-TEST_CMD="pipenv run python ${APP}/main.py"
+OWCLI="python owcli/main.py"
+TEST_CMD="python ${APP}/main.py"
 
 teardown() {
   rm -rf ${APP} actual
@@ -27,7 +25,7 @@ assert_out() {
 
 # Only for this test
 prepare() {
-  $OWCLI init ${APP}
+  $OWCLI init ${APP} --python x.y
   mv ${APP} tmpapp
   mv tmpapp/${APP} .
   rm -rf tmpapp
@@ -68,7 +66,7 @@ prepare() {
 }
 
 @test "Init" {
-  $OWCLI init ${APP}
+  $OWCLI init ${APP} --python x.y
 
   assert_exists ${APP}
 }
@@ -211,4 +209,13 @@ prepare() {
   run $TEST_CMD cmd3 --help
   [ "$status" -eq 0 ]
   assert_out cmd3/help "$output"
+}
+
+# Import error
+@test "cmd3 import error" {
+  prepare
+  echo "import hogehoge" >> ${APP}/commands/cmd3/main.py
+  run $TEST_CMD cmd3
+  [ "$status" -eq 1 ]
+  assert_out cmd3/error "$(echo "$output" | tail -1)"
 }
