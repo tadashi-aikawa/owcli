@@ -39,6 +39,6 @@ jobs:
       if: always()
       with:
         type: ${{ job.status }}
-        job_name: "*e2e tests*"
+        job_name: ":python:*${{ matrix.python }}* e2e tests"
         icon_emoji: "tio2"
         url: ${{ secrets.SLACK_WEBHOOK }}
