@@ -27,7 +27,7 @@ assert_out() {
 
 # Only for this test
 prepare() {
-  $OWCLI init ${APP}
+  $OWCLI init ${APP} --python x.y
   mv ${APP} tmpapp
   mv tmpapp/${APP} .
   rm -rf tmpapp
