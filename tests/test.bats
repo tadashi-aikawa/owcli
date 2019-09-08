@@ -1,10 +1,8 @@
 #!/usr/bin/env bats
-
-export PIPENV_VERBOSITY=-1
 APP="testapp"
 
-OWCLI="pipenv run python owcli/main.py"
-TEST_CMD="pipenv run python ${APP}/main.py"
+OWCLI="python owcli/main.py"
+TEST_CMD="python ${APP}/main.py"
 
 teardown() {
   rm -rf ${APP} actual
