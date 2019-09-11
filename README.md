@@ -1,10 +1,10 @@
 owcli
 =====
 
-[![Actions Status](https://github.com/tadashi-aikawa/owcli/workflows/Tests/badge.svg)](https://github.com/tadashi-aikawa/owcli/actions)
-[![versions](https://img.shields.io/pypi/pyversions/owcli.svg)]()
 [![pypi](https://img.shields.io/pypi/v/owcli.svg)](https://pypi.org/project/owcli/)
-[![license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
+[![versions](https://img.shields.io/pypi/pyversions/owcli.svg)](https://pypi.org/project/owcli/)
+[![Actions Status](https://github.com/tadashi-aikawa/owcli/workflows/Tests/badge.svg)](https://github.com/tadashi-aikawa/owcli/actions)
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/tadashi-aikawa/owcli/blob/master/LICENSE)
 
 CLI framework which supports both command and subcommand based on [docopt].
 
