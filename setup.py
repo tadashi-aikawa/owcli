@@ -40,7 +40,7 @@ setup(
     install_requires=["docopt", "owlmixin>=5.1.0"],
     entry_points={"console_scripts": ["owcli = owcli.main:main"]},
     classifiers=[
-        "Development Status :: 2 - Pre-Alpha",
+        "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
         "Topic :: Software Development :: Libraries :: Application Frameworks",
         "License :: OSI Approved :: MIT License",
