@@ -25,7 +25,7 @@ assert_out() {
 
 # Only for this test
 prepare() {
-  $OWCLI init ${APP} --python x.y
+  $OWCLI init ${APP} --python $(pipenv run python -V | cut -d' ' -f2)
   mv ${APP} tmpapp
   mv tmpapp/${APP} .
   rm -rf tmpapp
