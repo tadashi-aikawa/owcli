@@ -32,10 +32,10 @@ jobs:
           sed -ri 's/python_version = ".+"/python_version = "${{ matrix.python }}"/g' Pipfile
           pipenv install --dev --skip-lock
 
-      - run: make test
-
-      - run: sudo npm install -g bats
-      - run: make test-cli
+      - name: CLI tests
+      - run: |
+          sudo npm install -g bats
+          make test-cli
 
       - name: "Slack notification (not success)"
         uses: homoluctus/slatify@master
