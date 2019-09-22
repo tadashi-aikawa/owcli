@@ -58,7 +58,7 @@ jobs:
         with:
           type: ${{ job.status }}
           username: GitHub Actions (Success)
-          job_name: "<!channel> :python: All tests"
+          job_name: ":python: All tests"
           icon_emoji: ":renne:"
           url: ${{ secrets.SLACK_WEBHOOK }}
  
