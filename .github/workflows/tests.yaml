@@ -17,33 +17,48 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python: [ '3.6', '3.7']
+        python: ["3.6", "3.7"]
     name: Python ${{ matrix.python }}
 
     steps:
-    - name: Checkout a repository
-      uses: actions/checkout@v1
+      - uses: actions/checkout@v1
+      - uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python }}
 
-    - name: Set up Python
-      uses: actions/setup-python@v1
-      with:
-        python-version: ${{ matrix.python }}
-    - name: Install dependencies
-      run: |
+      - name: Install dependencies
+        run: |
           python -m pip install --upgrade pip pipenv
           sed -ri 's/python_version = ".+"/python_version = "${{ matrix.python }}"/g' Pipfile
           pipenv install --dev --skip-lock
 
-    - name: Install bats
-      run: sudo npm install -g bats
-    - name: CLI e2e test
-      run: make test-cli
+      - run: make test
 
-    - name: Slack notification
-      uses: homoluctus/slatify@master
-      if: always()
-      with:
-        type: ${{ job.status }}
-        job_name: ":python:*${{ matrix.python }}* e2e tests"
-        icon_emoji: "tio2"
-        url: ${{ secrets.SLACK_WEBHOOK }}
+      - run: sudo npm install -g bats
+      - run: make test-cli
+
+      - name: "Slack notification (not success)"
+        uses: homoluctus/slatify@master
+        if: "! success()"
+        with:
+          type: ${{ job.status }}
+          username: GitHub Actions (Failure)
+          job_name: ":python:*${{ matrix.python }}* Tests"
+          icon_emoji: "tio2"
+          url: ${{ secrets.SLACK_WEBHOOK }}
+
+  notify:
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "Slack Notification (success)"
+        uses: homoluctus/slatify@master
+        if: always()
+        with:
+          type: ${{ job.status }}
+          username: GitHub Actions (Success)
+          job_name: ":python: All tests"
+          icon_emoji: ":renne:"
+          url: ${{ secrets.SLACK_WEBHOOK }}
+ 
