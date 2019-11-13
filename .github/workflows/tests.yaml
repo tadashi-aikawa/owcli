@@ -34,10 +34,8 @@ jobs:
 
       - name: CLI tests
         run: |
-          ls -al /home/runner
-          ls -al /home/runner/.config
-          ls -al /home/runner/.config/pypoetry
-          sudo npm install -g bats
+          npm set prefix $HOME
+          npm install -g bats
           make test-cli
 
       - name: "Slack notification (not success)"
