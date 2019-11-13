@@ -12,51 +12,53 @@ help: ## Print this help
 	@echo 'Targets:'
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z0-9][a-zA-Z0-9_-]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
-branch_version := $(shell git rev-parse --abbrev-ref HEAD)
+version := $(shell git rev-parse --abbrev-ref HEAD)
 
-#------
 
-_clean-package: ## Clean package
-	@echo Start $@
-	@rm -rf build dist jumeaux.egg-info
-	@echo End $@
+#---- Basic
 
-_package: _clean-package ## Package OwlMixin
-	@echo Start $@
-	@pipenv run python setup.py bdist_wheel
-	@echo End $@
+init-dev: ## Install dependencies and create envirionment
+	@poetry install
 
 test-cli: ## Test on CLI
-	@echo Start $@
-	@pipenv run bats tests/test.bats
-	@echo End $@
+	@poetry run bats tests/test.bats
 
-release: ## Release (set TWINE_USERNAME and TWINE_PASSWORD to enviroment varialbles)
+
+#---- Release
+
+_clean-package: ## Clean package
+	@rm -rf build dist jumeaux.egg-info
+
+_package: _clean-package ## Package OwlMixin
+	@poetry build -f wheel
+
+release:## Release
 
 	@echo '0. Install packages from lockfile and test'
-	@pipenv install --deploy
+	@make init-dev
 	@make test-cli
 
-	@echo '1. Update versions'
-	@sed -i -r 's/__version__ = ".+"/__version__ = "$(branch_version)"/g' owcli/main.py
+	@echo '1. Version up'
+	@poetry version $(version)
 
 	@echo '2. Staging and commit'
-	git add owcli/main.py
-	git commit -m ':package: Version $(branch_version)'
+	git add pyproject.toml
+	git commit -m ':package: Version $(version)'
 
 	@echo '3. Tags'
-	git tag v$(branch_version) -m v$(branch_version)
+	git tag v$(version) -m v$(version)
 
-	@echo '4. Deploy'
-	@echo 'Packaging...'
-	@pipenv run python setup.py bdist_wheel
-	@echo 'Deploying...'
-	@pipenv run twine upload dist/owcli-$(branch_version)-py3-none-any.whl
+	@echo '4. Package Owcli'
+	@make _package
 
-	@echo '5. Push'
-	git push --tags
+	@echo '5. Publish'
+	@poetry publish
+
+	@echo '6. Push'
+	git push origin v$(version)
 	git push
 
 	@echo 'Success All!!'
 	@echo 'Create a pull request and merge to master!!'
-	@echo 'https://github.com/tadashi-aikawa/owcli/compare/$(branch_version)?expand=1'
+	@echo 'https://github.com/tadashi-aikawa/owcli/compare/$(version)?expand=1'
+
