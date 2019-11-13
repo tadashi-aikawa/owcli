@@ -35,6 +35,8 @@ jobs:
       - name: CLI tests
         run: |
           sudo npm install -g bats
+          whoami
+          ls -l /home/runner/.config/pypoetry/config.toml
           make test-cli
 
       - name: "Slack notification (not success)"
