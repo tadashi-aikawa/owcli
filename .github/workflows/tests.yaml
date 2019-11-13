@@ -36,7 +36,9 @@ jobs:
         run: |
           sudo npm install -g bats
           whoami
-          ls -l /home/runner/.config/pypoetry/config.toml
+          ls -l /home/runner
+          ls -l /home/runner/.config
+          ls -l /home/runner/.config/pypoetry
           make test-cli
 
       - name: "Slack notification (not success)"
