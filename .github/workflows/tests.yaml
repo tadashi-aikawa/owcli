@@ -29,13 +29,13 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip pipenv
-          sed -ri 's/python_version = ".+"/python_version = "${{ matrix.python }}"/g' Pipfile
-          pipenv install --dev --skip-lock
+          python -m pip install poetry --pre
+          poetry install
 
       - name: CLI tests
         run: |
-          sudo npm install -g bats
-          make test-cli
+          npm install bats
+          poetry run npx bats tests/test.bats
 
       - name: "Slack notification (not success)"
         uses: homoluctus/slatify@master
@@ -63,4 +63,4 @@ jobs:
           job_name: ":python: All tests"
           icon_emoji: ":renne:"
           url: ${{ secrets.SLACK_WEBHOOK }}
- 
+

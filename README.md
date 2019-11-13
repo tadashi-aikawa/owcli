@@ -120,7 +120,7 @@ For developer
 
 ### Requirements
 
-* pipenv
+* poetry
 * make
 * bats
 
