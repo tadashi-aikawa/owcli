@@ -34,9 +34,8 @@ jobs:
 
       - name: CLI tests
         run: |
-          npm set prefix $HOME
-          npm install -g bats
-          make test-cli
+          npm install bats
+          poetry run npx bats tests/test.bats
 
       - name: "Slack notification (not success)"
         uses: homoluctus/slatify@master
