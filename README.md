@@ -25,7 +25,7 @@ Quick start
 Create owcli project.
 
 ```
-$ owcli init <app_name>
+$ owcli init <app_name> --python <python_version>
 ```
 
 Run
