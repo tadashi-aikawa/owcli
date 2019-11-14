@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "owcli"
-version = "8.0.0"
+version = "0.7.0"
 description = "CLI framework which supports both command and subcommand."
 authors = ["tadashi-aikawa <syou.maman@gmail.com>"]
 license = "MIT"

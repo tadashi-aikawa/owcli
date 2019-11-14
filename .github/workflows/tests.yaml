@@ -8,7 +8,8 @@ on:
       - 'owcli/**/*'
       - 'tests/*'
       - 'tests/**/*'
-      - 'Pipfile.lock'
+      - 'poetry.lock'
+      - 'Makefile'
   schedule:
     - cron: '0 0 * * *'
 
@@ -34,8 +35,9 @@ jobs:
 
       - name: CLI tests
         run: |
-          npm install bats
-          poetry run npx bats tests/test.bats
+          sudo npm install -g bats
+          sudo chmod +rx $HOME/.config -R
+          make test-cli
 
       - name: "Slack notification (not success)"
         uses: homoluctus/slatify@master
