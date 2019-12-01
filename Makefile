@@ -27,7 +27,7 @@ test-cli: ## Test on CLI
 #---- Release
 
 _clean-package: ## Clean package
-	@rm -rf build dist jumeaux.egg-info
+	@rm -rf build dist owcli.egg-info
 
 _package: _clean-package ## Package OwlMixin
 	@poetry build -f wheel
