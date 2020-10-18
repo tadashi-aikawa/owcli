@@ -62,7 +62,7 @@ jobs:
         with:
           type: ${{ job.status }}
           username: GitHub Actions (Success)
-          job_name: ":python: All tests `Versions 3.6/3.7/3.8/3.9` Succeeded"
+          job_name: ":terminal: All tests `OS` :ubuntu:  `Versions` :python: 3.6/3.7/3.8/3.9 Succeeded"
           icon_emoji: ":github:"
           url: ${{ secrets.SLACK_WEBHOOK }}
 
