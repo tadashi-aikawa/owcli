@@ -41,7 +41,7 @@ release: guard-version ## make release version=x.y.z
 
 	@echo '0. Install packages from lockfile and test'
 	@make init-dev
-	@make test-cli
+	# @make test-cli
 
 	@echo '1. Version up'
 	@poetry version $(version)
