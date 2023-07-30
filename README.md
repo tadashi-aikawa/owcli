@@ -133,16 +133,11 @@ For developer
 $ make test-cli
 ```
 
-
 ### Version up
 
-#### Confirm that your branch name equals release version
-
+```bash
+make release version=x.y.z
 ```
-$ make release
-```
-
-Finally, create pull request and merge to master!!
 
 
 Licence
