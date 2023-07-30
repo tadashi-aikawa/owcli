@@ -16,8 +16,8 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.6"
-owlmixin = "^5.4.1"
+python = "^3.7"
+owlmixin = "^6.0"
 docopt = "^0.6.2"
 
 [tool.poetry.dev-dependencies]
@@ -28,7 +28,7 @@ docopt = "^0.6.2"
 
 [tool.black]
 line-length = 100
-target-version = ['py36', 'py37', 'py38']
+target-version = ['py37', 'py38', 'py39', 'py310', 'py311']
 include = '\.pyi?$'
 exclude = '''
 /(
