@@ -1,0 +1,36 @@
+name: "Release"
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release version (ex: 2.3.1)"
+        required: true
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install uv
+        run: pipx install uv
+      - run: |
+          git config user.email "github-actions@users.noreply.github.com"
+          git config user.name "GitHub Actions"
+
+      - name: Release to PyPI
+        run: make release version=${{ github.event.inputs.version }}
+        env:
+          TZ: "Asia/Tokyo"
+
+      - name: Release to GitHub
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ github.event.inputs.version }}
