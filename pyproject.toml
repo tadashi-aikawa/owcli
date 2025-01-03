@@ -9,7 +9,7 @@ dependencies = [
     "docopt<1.0.0,>=0.6.2",
 ]
 name = "owcli"
-version = "0.8.0"
+version = "0.9.0"
 description = "CLI framework which supports both command and subcommand."
 readme = "README.md"
 keywords = [
