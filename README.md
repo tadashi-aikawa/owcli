@@ -39,7 +39,7 @@ $ pipenv run python <app_name>/main.py --help
 ### Concrete example
 
 ```bash
-$ owcli init testapp --python 3.7
+$ owcli init testapp --python 3.13
 ------------------------
 | Create entries...    |
 ------------------------
@@ -120,7 +120,7 @@ For developer
 
 ### Requirements
 
-* poetry
+* uv
 * make
 * bats
 

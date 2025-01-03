@@ -22,11 +22,8 @@ guard-%:
 
 #---- Basic
 
-init-dev: ## Install dependencies and create envirionment
-	@poetry install
-
 test-cli: ## Test on CLI
-	@poetry run bats tests/test.bats
+	@uv run bats tests/test.bats
 
 
 #---- Release
@@ -35,16 +32,16 @@ _clean-package: ## Clean package
 	@rm -rf build dist owcli.egg-info
 
 _package: _clean-package ## Package OwlMixin
-	@poetry build -f wheel
+	@uv build
 
 release: guard-version ## make release version=x.y.z
 
 	@echo '0. Install packages from lockfile and test'
-	@make init-dev
+	@uv sync
 	# @make test-cli
 
 	@echo '1. Version up'
-	@poetry version $(version)
+	@sed -i 's/^version = ".*"/version = "$(version)"/' pyproject.toml
 
 	@echo '2. Staging and commit'
 	git add pyproject.toml
@@ -57,7 +54,7 @@ release: guard-version ## make release version=x.y.z
 	@make _package
 
 	@echo '5. Publish'
-	@poetry publish
+	@uv publish
 
 	@echo '6. Push'
 	git push --tags
