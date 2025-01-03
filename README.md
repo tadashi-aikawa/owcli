@@ -11,16 +11,14 @@ CLI framework which supports both command and subcommand based on [docopt].
 [docopt]: http://docopt.org/
 
 
-Install
--------
+## Install
 
 ```
 $ pip install owcli
 ```
 
 
-Quick start
------------
+## Quick start
 
 Create owcli project.
 
@@ -114,9 +112,7 @@ names:
   - hogu
 ```
 
-
-For developer
--------------
+## For developer
 
 ### Requirements
 
@@ -133,15 +129,11 @@ For developer
 $ make test-cli
 ```
 
-### Version up
+## 📦 Release
 
-```bash
-make release version=x.y.z
-```
+https://github.com/tadashi-aikawa/owcli/actions/workflows/release.yaml?query=workflow%3ARelease
 
-
-Licence
--------
+## Licence
 
 ### MIT
 
